@@ -1,6 +1,6 @@
 # Makefile to package selected files into a zip (placed at repo root)
 
-ZIP_NAME := source.zip
+ZIP_NAME := supplement.zip
 EXTS     := py md txt pt pth npy yaml
 
 # Build the find-expression for included extensions
