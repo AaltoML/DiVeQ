@@ -1,15 +1,30 @@
-# **DiVeQ: Differentiable Vector Quantization Using the Reparameterization Trick**
+# DiVeQ: Differentiable Vector Quantization Using the Reparameterization Trick
 
-# Abstract
+This is the code implementation accompanying the blind submission *"DiVeQ: Differentiable Vector Quantization Using the Reparameterization Trick"*.
+
+**Abstract:**
 Vector quantization is common in deep models, yet its hard assignments block gradients and hinder end-to-end training. We propose DiVeQ, which treats quantization as adding an error vector that mimics the quantization distortion, keeping the forward pass hard while letting gradients flow. We also present a space-filling variant (SF-DiVeQ) that assigns to a curve constructed by the lines connecting codewords, resulting in less quantization error and full codebook usage. Both methods train end-to-end without requiring auxiliary losses or temperature schedules. On VQ-VAE compression and VQGAN generation across various data sets, they improve reconstruction and sample quality over alternative quantization approaches.
 
-# **VQVAE Compression directory**
+# VQVAE Compression
+
+## Contents of the VQVAE Directory
 
 - `train.py`: code to train the VQ-VAE model
 - `vq.py`: contains the code for all VQ optimization techniques
 - `util_funcs.py`: contains some utility functions like codebook replacement
 
-# **VQGAN Generation directory**
+## Creating the Conda Environment for VQVAE Compression
+
+Create the environment by passing the following in your terminal in the following order.
+
+```bash
+conda create --name vqvae_comp python=3.9.19
+conda activate vqvae_comp
+```
+
+# VQGAN Generation
+
+## Contents of the VQGAN Directory
 
 - `training_vqgan.py`: code to train the VQ-VAE model
 - `training_transformer.py`: code to train the transformer
@@ -25,18 +40,14 @@ Vector quantization is common in deep models, yet its hard assignments block gra
 - `helper.py`: contains some utility blocks used in building the models such as GroupNorm, ResidualBlock
 - `utils.py`: contains some utility functions like codebook replacement
 
-# **Create the conda environment for VQVAE Compression**
+## Creating the Conda Environment for VQGAN Generation
 
 Create the environment by passing the following in your terminal in the following order.
 
-`conda create --name vqvae_comp python=3.9.19`  
-`conda activate vqvae_comp`
+```bash
+conda create --name vqvae_comp python=3.9.19
+conda activate vqvae_comp
+```
+# License
 
-# **Create the conda environment for VQGAN Generation**
-
-Create the environment by passing the following in your terminal in the following order.
-
-`conda create --name vqvae_comp python=3.9.19`  
-`conda activate vqvae_comp`
-
-
+Upon acceptance of the paper, we plan to make the codes public on GitHub under the MIT License.
