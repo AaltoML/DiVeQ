@@ -10,17 +10,16 @@ Vector quantization is common in deep models, yet its hard assignments block gra
 ## Contents of the VQVAE Directory
 
 - `train.py`: code to train the VQ-VAE model
-- `vq.py`: contains the code for all VQ optimization techniques
-- `util_funcs.py`: contains some utility functions like codebook replacement
+- `vq.py`: contains the code for other baseline VQ optimization techniques
 
 ## Creating the Conda Environment for VQVAE Compression
 
 Create the environment by passing the following in your terminal in the following order.
 
 ```bash
-conda env create -f env_vqvae.yaml
+conda create --name vqvae_comp python 3.13.3
 conda activate vqvae_comp
-pip install torch==1.13.0+cu117 torchvision==0.14.0+cu117 --extra-index-url https://download.pytorch.org/whl/cu117
+pip install -r vqvae_comp_reqs.txt
 ```
 
 # VQGAN Generation
@@ -31,7 +30,7 @@ pip install torch==1.13.0+cu117 torchvision==0.14.0+cu117 --extra-index-url http
 - `training_transformer.py`: code to train the transformer
 - `sample_transformer.py`: code to generate images from trained VQGAN
 - `compute_fid.py`: code to compute the FID score
-- `vq.py`: contains the code for all VQ optimization techniques
+- `vq.py`: contains the code for other baseline VQ optimization techniques
 - `encoder.py`: contains the code for VQ-VAE encoder
 - `decoder.py`: contains the code for VQ-VAE decoder
 - `discriminator.py`: contains the code for the discriminator model used for training VQ-VAE
@@ -46,9 +45,9 @@ pip install torch==1.13.0+cu117 torchvision==0.14.0+cu117 --extra-index-url http
 Create the environment by passing the following in your terminal in the following order.
 
 ```bash
-conda env create -f env_vqgan.yaml
+conda create --name vqgan_gen python 3.13.3
 conda activate vqgan_gen
-pip install torch==2.4.0 torchvision==0.19.0 --index-url https://download.pytorch.org/whl/cu124
+pip install -r vqgan_gen_reqs.txt
 ```
 # License
 
