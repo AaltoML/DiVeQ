@@ -64,3 +64,17 @@ conda create --name vqgan_gen python 3.13.3
 conda activate vqgan_gen
 pip install -r vqgan_gen_reqs.txt
 ```
+
+## Citation
+
+```
+@InProceedings{vali2026diveq,
+    title={{DiVeQ}: {D}ifferentiable {V}ector {Q}uantization {U}sing the {R}eparameterization {T}rick},
+    author={Vali, Mohammad Hassan and Bäckström, Tom and Solin, Arno},
+    booktitle={International Conference on Learning Representations (ICLR)},
+    year={2026}
+}
+```
+
+## License
+This software is provided under the MIT License. See the accompanying [LICENSE](LICENSE) file for details.
