@@ -5,7 +5,7 @@ This is the code implementation for the paper *"DiVeQ: Differentiable Vector Qua
 **Abstract:**
 Vector quantization is common in deep models, yet its hard assignments block gradients and hinder end-to-end training. We propose DiVeQ, which treats quantization as adding an error vector that mimics the quantization distortion, keeping the forward pass hard while letting gradients flow. We also present a space-filling variant (SF-DiVeQ) that assigns to a curve constructed by the lines connecting codewords, resulting in less quantization error and full codebook usage. Both methods train end-to-end without requiring auxiliary losses or temperature schedules. In VQ-VAE image compression, VQGAN image generation, and DAC speech coding tasks across various data sets, our proposed methods improve reconstruction and sample quality over alternative quantization approaches.
 
-![alt text](https://github.com/AaltoML/DiVeQ/main/diveq_teaser.png?raw=true)
+![alt text](https://raw.githubusercontent.com/AaltoML/DiVeQ/main/diveq_teaser.png)
 
 # VQVAE Compression
 
