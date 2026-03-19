@@ -20,10 +20,11 @@ class SFDIVEQDetach(nn.Module):
         - embedding_dim (int): Dimensionality of embeddings.
         - skip_iters (int): Number of training iterations to skip quantization for
             SF-DiVeQ custom initialization. Recommended skip_iters > 1000.
-        - avg_iters (int): Number of last training iterations to extract continuous
+        - avg_iters (int): Number of recent training iterations to extract continuous
             latents for SF-DiVeQ custom codebook initialization, before starting
             quantization. Recommended  50 < avg_iters < 100.
-        - uniform_init (bool): Whether to use uniform initialization.
+        - uniform_init (bool): Whether to initialize codebook with uniform distribution.
+            If False, the codebook is initialized from a normal distribution.
         - allow_warning (bool): Whether to print the warnings.
         - latents_on_cpu (bool): Whether to collect latents for initialization on cpu.
             If running out of CUDA memory, set it to True.
@@ -52,6 +53,8 @@ class SFDIVEQDetach(nn.Module):
         self.uniform_init = uniform_init
         self.allow_warning = allow_warning
         self.latents_on_cpu = latents_on_cpu
+
+        self._check_constraints()
 
         # ---------------- User warnings ----------------
         if allow_warning:
@@ -213,12 +216,19 @@ class SFDIVEQDetach(nn.Module):
                            .sum(dim=1)).clamp(min=0., max=1.)
         z_q_hard = c1 + (remainder_index.reshape(-1, 1) * (c2 - c1))
 
-        # used only for training the transformer
-        indices_for_transformer = indices_clamped + offset
-
-        return z_q_hard, indices, perplexity, indices_for_transformer
+        return z_q_hard, indices, perplexity
 
     # ---------------- Utility functions ----------------
+    def _check_constraints(self,) -> None:
+        if self.skip_iters < 0:
+            raise ValueError("`skip_iters` must be a positive integer value."
+                             " It is recommended that skip_iters > 1000.")
+        if self.avg_iters < 0:
+            raise ValueError("`avg_iters` must be a positive integer value."
+                             " It is recommended that 50 < avg_iters < 100.")
+        if self.avg_iters > self.skip_iters:
+            raise ValueError("`avg_iters` must be smaller than `skip_iters`.")
+
     def _check_input(self, z: torch.Tensor) -> None:
         if z.ndim != 2:
             raise ValueError("SF-DiVeQ's input must have shape of (N, D), where N is"
@@ -236,14 +246,6 @@ class SFDIVEQDetach(nn.Module):
         c2 = self.codebook[integer_index + 1]
         dithered_codebook = ((1 - dither) * c1) + (dither * c2)
         return dithered_codebook, dither
-
-    # Sampling from SF-DiVeQ curve when training the transformer
-    def _sample_dithered_codebook(self, indices: torch.Tensor)-> torch.Tensor:
-        dither = torch.rand((indices.shape[0], 1), device=indices.device)
-        c1 = self.codebook[indices]
-        c2 = self.codebook[indices + 1]
-        sampled_codebook = ((1 - dither) * c1) + (dither * c2)
-        return sampled_codebook
 
     def _compute_perplexity(self, indices: torch.Tensor) -> float:
         encodings = torch.zeros(indices.shape[0], self.num_embeddings,

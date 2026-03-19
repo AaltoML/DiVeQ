@@ -17,11 +17,14 @@ class DIVEQDetach(nn.Module):
         - replacement_iters (int): Replacement interval (number of training iterations
             to apply codebook replacement). Recommended 50 < replacement_iters < 300.
         - discard_threshold (float): Threshold to discard the codebook entries that are
-            used less than this threshold after "replacement_iters" iteration.
-            Recommended 0.01 < discard_threshold < 0.05.
+            used less than this threshold after "replacement_iters" iterations.
+            Recommended 0.01 < discard_threshold < 0.05. discard_threshold must be in
+            the range of [0,1] such that discard_threshold=0.01 means to discard the
+            codebook entries which are used less than 1 percent.
         - perturb_eps (float): Adjusts perturbation/shift magnitude from used codewords
-            during codebook replacement.
+            for codebook replacement.
         - uniform_init (bool): Whether to initialize codebook with uniform distribution.
+            If False, the codebook is initialized from a normal distribution.
         - allow_warning (bool): Whether to print the warnings.
         - verbose (bool): Whether to print codebook replacement status.
 
@@ -51,6 +54,8 @@ class DIVEQDetach(nn.Module):
         self.uniform_init = uniform_init
         self.allow_warning = allow_warning
         self.verbose = verbose
+
+        self._check_constraints()
 
         # ---------------- User warnings ----------------
         if allow_warning:
@@ -153,6 +158,16 @@ class DIVEQDetach(nn.Module):
         return z_q_hard, indices, perplexity
 
     # ---------------- Utility functions ----------------
+    def _check_constraints(self,) -> None:
+        if self.replacement_iters < 0:
+            raise ValueError("`replacement_iters` must be a positive integer value."
+                             " It is recommended that 50 < replacement_iters < 300.")
+        if (self.discard_threshold < 0.0) or (self.discard_threshold > 1.0):
+            raise ValueError("`discard_threshold` must be in the range of [0,1]. It is"
+                             " recommended that 0.01 < discard_threshold < 0.05,"
+                             " such that discard_threshold=0.01 means to discard the"
+                             " codebook entries which are used less than 1 percent.")
+
     def _check_input(self, z: torch.Tensor) -> None:
         if z.ndim != 2:
             raise ValueError("DiVeQ_Detach input must have the shape of (N, D), where"
