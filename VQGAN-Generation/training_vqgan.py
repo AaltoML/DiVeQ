@@ -9,6 +9,7 @@ from discriminator import Discriminator
 from lpips import LPIPS
 from vqgan import VQGAN
 from utils import load_data, weights_init
+import kagglehub
 
 from torch import autocast
 from torch.cuda.amp import GradScaler
@@ -153,6 +154,11 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # path to dataset directory
-    args.dataset_path = r"path/to/dataset/directory"
+    os.makedirs("data_dir", exist_ok=True)
+    data_path = kagglehub.dataset_download("badasstechie/celebahq-resized-256x256", output_dir="./data_dir")
+    args.dataset_path = os.path.join(data_path, "celeba_hq_256")
+
+    # device
+    args.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     train_vqgan = TrainVQGAN(args)

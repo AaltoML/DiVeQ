@@ -30,6 +30,9 @@ parser.add_argument('--sos-token', type=int, default=0, help='Start of Sentence 
 
 args = parser.parse_args()
 
+# device
+args.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 # Configs from trained VQ-VAE in first stage training
 trained_vqvae_epochs = 100
 trained_vqvae_lr = 2.5e-05
@@ -50,21 +53,21 @@ elif args.codebook_bits == 9:
 elif args.codebook_bits >= 10:
     top_k = 300
 
-os.makedirs(f"generations/{args.codebook_optimization}", exist_ok=True)
-generation_path = f"generations/{args.codebook_optimization}"
+os.makedirs(f"generations", exist_ok=True)
+generation_path = f"./generations"
 
 # Loading the trained VQ-VAE
 args.checkpoint_path = fr"./checkpoints/vqgan_{args.codebook_optimization}_epoch{trained_vqvae_epochs}_{args.codebook_bits}bit_lr{trained_vqvae_lr}_bs{trained_vqvae_bs}.pt"
 
 # Loading the trained transformer
-transformer = VQGANTransformer(args).to("cuda")
+transformer = VQGANTransformer(args).to(args.device)
 transformer.load_state_dict(torch.load(os.path.join(f"./checkpoints/", f"transformer_{args.codebook_optimization}_epoch{trained_transformer_epochs}_{args.codebook_bits}bit_lr{trained_transformer_lr}_bs{trained_transformer_bs}.pt")))
 
 k=1
 for i in tqdm(range(num_samples)):
-    start_indices = torch.zeros((k, 0)).long().to("cuda")
+    start_indices = torch.zeros((k, 0)).long().to(args.device)
     sos_tokens = torch.ones(start_indices.shape[0], 1) * 0
-    sos_tokens = sos_tokens.long().to("cuda")
+    sos_tokens = sos_tokens.long().to(args.device)
     sample_indices = transformer.sample(start_indices, sos_tokens, steps=256, top_k=top_k)
     sampled_imgs = transformer.z_to_image(sample_indices)
     sampled_imgs = (sampled_imgs + 1) / 2

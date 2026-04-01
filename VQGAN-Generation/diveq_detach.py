@@ -159,7 +159,7 @@ class DIVEQDetach(nn.Module):
 
     # ---------------- Utility functions ----------------
     def _check_constraints(self,) -> None:
-        if self.replacement_iters < 0:
+        if (self.replacement_iters <= 0) or (type(self.replacement_iters) is not int):
             raise ValueError("`replacement_iters` must be a positive integer value."
                              " It is recommended that 50 < replacement_iters < 300.")
         if (self.discard_threshold < 0.0) or (self.discard_threshold > 1.0):

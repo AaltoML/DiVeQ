@@ -279,7 +279,7 @@ class ResidualSFDIVEQ(nn.Module):
 
     # ---------------- Utility functions ----------------
     def _check_constraints(self,) -> None:
-        if self.noise_var < 0.0:
+        if self.noise_var <= 0.0:
             raise ValueError("`noise_var` must be a positive float value. To have more"
                              " precise nearest-neighbor assignments, it is recommended"
                              " that noise_var < 1e-2.")
@@ -296,7 +296,7 @@ class ResidualSFDIVEQ(nn.Module):
                              " It is recommended to set `replacement_iters` at least"
                              " 10-20 times smaller than `skip_iters` to prevent unused"
                              " codewords to be involved in custom initialization.")
-        if self.replacement_iters < 0:
+        if (self.replacement_iters <= 0) or (type(self.replacement_iters) is not int):
             raise ValueError("`replacement_iters` must be a positive integer value."
                              " It is recommended that 50 < replacement_iters < 300.")
         if (self.discard_threshold < 0.0) or (self.discard_threshold > 1.0):

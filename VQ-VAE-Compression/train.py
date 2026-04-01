@@ -49,6 +49,9 @@ os.makedirs("data_dir", exist_ok=True)
 data_path = kagglehub.dataset_download("badasstechie/celebahq-resized-256x256", output_dir="./data_dir")
 args.data_path = os.path.join(data_path, "celeba_hq_256")
 
+# device
+args.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
 # ---------------- Creating the VQ-VAE model ----------------
 class Model(nn.Module):
     def __init__(self, num_hiddens, num_residual_layers, num_residual_hiddens,

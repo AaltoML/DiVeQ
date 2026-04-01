@@ -150,7 +150,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     # path to dataset directory
-    args.dataset_path = r"path/to/dataset/directory"
+    args.dataset_path = r"./data_dir/celeba_hq_256"
+
+    # device
+    args.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     os.makedirs(f"results_transformer/{args.codebook_optimization}", exist_ok=True)
     os.makedirs("checkpoints", exist_ok=True)
