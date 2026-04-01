@@ -21,6 +21,12 @@ pip install -r vqvae_comp_reqs.txt
 
 ## Train VQ-VAE model
 
+First, change directory to `vqvae_compression`
+
+```bash
+cd vqvae_compression
+```
+
 Train the VQ-VAE model:
 
 ```bash
@@ -40,6 +46,12 @@ pip install -r vqgan_gen_reqs.txt
 ```
 
 ## Train VQGAN model
+
+First, change directory to `vqgan_generation`
+
+```bash
+cd vqgan_generation
+```
 
 1. Train the generator (VQ-VAE) model (first stage training):
 
