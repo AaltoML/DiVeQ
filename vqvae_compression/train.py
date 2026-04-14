@@ -15,8 +15,15 @@ from model import Encoder, Decoder
 from vq import STE, EMA, RT, GumbelSoftmax, NSVQ
 
 # Importing DiVeQ modules for quantization
-from diveq import (DIVEQ, SFDIVEQ, DIVEQDetach, SFDIVEQDetach, ResidualDIVEQ,
-                                    ResidualSFDIVEQ, ProductDIVEQ, ProductSFDIVEQ)
+from diveq import DIVEQ
+from sf_diveq import SFDIVEQ
+from residual_diveq import ResidualDIVEQ
+from residual_sf_diveq import ResidualSFDIVEQ
+from product_diveq import ProductDIVEQ
+from product_sf_diveq import ProductSFDIVEQ
+from diveq_detach import DIVEQDetach
+from sf_diveq_detach import SFDIVEQDetach
+
 
 parser = argparse.ArgumentParser(description="VQVAE")
 parser.add_argument("--size", type=int, default=256, help='Image height and width')
