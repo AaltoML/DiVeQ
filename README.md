@@ -1,13 +1,18 @@
 # DiVeQ: Differentiable Vector Quantization Using the Reparameterization Trick
 
-This is the code implementation for the paper [*"DiVeQ: Differentiable Vector Quantization Using the Reparameterization Trick"*](https://arxiv.org/abs/2509.26469) accepted at International Conference on Learning Representations (ICLR) in 2026.
+This is the official code implementation for the paper [*"DiVeQ: Differentiable Vector Quantization Using the Reparameterization Trick"*](https://arxiv.org/abs/2509.26469) accepted at International Conference on Learning Representations (ICLR) in 2026.
 
-To use DiVeQ as vector quantizer in your model, you can use the provided `diveq` PyPI package [under this link](https://pypi.org/project/diveq/) that is installable by running `pip install diveq`. For more details and documentation, please look into the package.
+![alt text](diveq_teaser.png)
 
 **Abstract:**
 Vector quantization is common in deep models, yet its hard assignments block gradients and hinder end-to-end training. We propose DiVeQ, which treats quantization as adding an error vector that mimics the quantization distortion, keeping the forward pass hard while letting gradients flow. We also present a space-filling variant (SF-DiVeQ) that assigns to a curve constructed by the lines connecting codewords, resulting in less quantization error and full codebook usage. Both methods train end-to-end without requiring auxiliary losses or temperature schedules. In VQ-VAE image compression, VQGAN image generation, and DAC speech coding tasks across various data sets, our proposed methods improve reconstruction and sample quality over alternative quantization approaches.
 
-![alt text](diveq_teaser.png)
+> [!TIP]
+> To use DiVeQ as vector quantizer in your model, you can use the provided `diveq` [PyPI package](https://pypi.org/project/diveq/) that is installable by running `pip install diveq`. For more details and documentation, please look into the package.
+
+> [!NOTE]
+> In its simplest form, DiVeQ is also available as part of the popular [vector-quantize-pytorch](https://pypi.org/project/vector-quantize-pytorch/) package (by setting `directional_reparam=True`).
+
 
 # VQ-VAE Image Compression
 
